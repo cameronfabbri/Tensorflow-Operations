@@ -91,8 +91,10 @@ def sig(x, name='sig'):
 ###### end activation functions #########
 
 
-####### image operations #######
 
+
+
+####### image operations #######
 '''
    Converts an image from [0,1] range to [-1,1]
 '''
@@ -110,6 +112,7 @@ def deprocess(image):
 
 '''
    Convert an image from RGB color range to LAB
+   https://github.com/affinelayer/pix2pix-tensorflow/blob/master/pix2pix.py#L155
 '''
 def rgb_to_lab(srgb):
    with tf.name_scope('rgb_to_lab'):
@@ -151,6 +154,7 @@ def rgb_to_lab(srgb):
 
 '''
    Convert LAB colorspace to RGB
+   https://github.com/affinelayer/pix2pix-tensorflow/blob/master/pix2pix.py#L196
 '''
 def lab_to_rgb(lab):
    with tf.name_scope('lab_to_rgb'):
