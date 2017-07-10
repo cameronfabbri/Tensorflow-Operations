@@ -10,18 +10,31 @@ import math
 
 
 '''
-   Converts an image from [0,1] range to [-1,1]
+   Converts a single image from [0,255] range to [-1,1]
 '''
 def preprocess(image):
    with tf.name_scope('preprocess'):
-      return image * 2 - 1
+      image = tf.image.convert_image_dtype(image, dtype=tf.float32)
+      return (image/127.5)-1.0
 
 '''
-   Converts an image from [-1,1] range to [0,1]
+   Converts a single image from [-1,1] range to [0,255]
 '''
 def deprocess(image):
    with tf.name_scope('deprocess'):
-      return (image + 1) / 2
+      return tf.image.convert_image_dtype((image+1.0)/2.0, tf.uint8)
+   
+'''
+   Converts a batch of images from [-1,1] range to [0,255]
+'''
+def batch_convert2int(images):
+  return tf.map_fn(deprocess, images, dtype=tf.uint8)
+
+'''
+   Converts a batch of images from [0,255] to [-1,1]
+'''
+def batch_convert2float(images):
+  return tf.map_fn(preprocess, images, dtype=tf.float32)
 
 
 '''
