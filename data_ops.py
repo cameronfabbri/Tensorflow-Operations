@@ -27,13 +27,13 @@ def deprocess(image):
 '''
    Converts a batch of images from [-1,1] range to [0,255]
 '''
-def batch_convert2int(images):
+def batch_deprocess(images):
   return tf.map_fn(deprocess, images, dtype=tf.uint8)
 
 '''
    Converts a batch of images from [0,255] to [-1,1]
 '''
-def batch_convert2float(images):
+def batch_preprocess(images):
   return tf.map_fn(preprocess, images, dtype=tf.float32)
 
 
