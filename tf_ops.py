@@ -99,6 +99,12 @@ def selu(x):
    scale = 1.0507009873554804934193349852946
    return scale*tf.where(x>=0.0, x, alpha*tf.nn.elu(x))
 
+'''
+   Like concat relu/elu, but with selu
+'''
+def concat_selu(x):
+   axis = len(x.get_shape())-1
+   return selu(tf.concat([x, -x], axis))
 
 ###### end activation functions #########
 
