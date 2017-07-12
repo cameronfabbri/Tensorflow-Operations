@@ -25,24 +25,27 @@ def instance_norm(x, epsilon=1e-5):
    mean, var = tf.nn.moments(x, [1, 2], keep_dims=True)
    return tf.div(tf.subtract(x, mean), tf.sqrt(tf.add(var, epsilon)))
 
-
 '''
-   Transpose convolution, but resizing first then performing conv2d with stride 1
+   2d transpose convolution, but resizing first then performing conv2d
+   with kernel size 1 and stride of 1
    See http://distill.pub/2016/deconv-checkerboard/
-'''
-def upconv2d(x, filters, kernel_size, name):
 
-   height = x.get_shape()[1]
-   width  = x.get_shape()[2]
+   The new height and width can be anything, but default to the current shape * 2
+'''
+def upconv2d(x, filters, name, new_height=None, new_width=None, kernel_size=1):
+
+   shapes = x.get_shape().as_list()
+   height = shapes[1]
+   width  = shapes[2]
 
    # resize image using method of nearest neighbor
-   x_resize = tf.image.resize_nearest_neighbor(enc_conv8, [height*2, width*2])
+   if new_height is not None and new_width is not None:
+      x_resize = tf.image.resize_nearest_neighbor(x, [height*2, width*2])
+   else:
+      x_resize = tf.image.resize_nearest_neighbor(x, [new_height, new_width])
 
    # conv with stride 1
-   out = tf.layers.conv2d(x_resize, filters, kernel_size, strides=1, name=name)
-
-   return out
-
+   return tf.layers.conv2d(x_resize, filters, kernel_size, strides=1, name=name)
 
 ######## activation functions ###########
 '''
