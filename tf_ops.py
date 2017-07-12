@@ -47,6 +47,14 @@ def upconv2d(x, filters, name, new_height=None, new_width=None, kernel_size=1):
    # conv with stride 1
    return tf.layers.conv2d(x_resize, filters, kernel_size, strides=1, name=name)
 
+'''
+   L1 penalty, as seen in https://arxiv.org/pdf/1609.02612.pdf
+'''
+def l1Penalty(x, scale=0.1, name="L1Penalty"):
+    l1P = tf.contrib.layers.l1_regularizer(scale)
+    return l1P(x)
+
+
 ######## activation functions ###########
 '''
    Leaky RELU
