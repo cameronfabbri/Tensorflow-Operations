@@ -32,7 +32,7 @@ def instance_norm(x, epsilon=1e-5):
 
    The new height and width can be anything, but default to the current shape * 2
 '''
-def upconv2d(x, filters, name, new_height=None, new_width=None, kernel_size=1):
+def upconv2d(x, filters, name, new_height=None, new_width=None, kernel_size=3):
 
    shapes = x.get_shape().as_list()
    height = shapes[1]
