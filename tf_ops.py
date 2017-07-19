@@ -18,6 +18,15 @@ def bn(x):
 
 
 '''
+   Layer normalizes a 2D tensor along its second axis, which corresponds to batch
+'''
+def ln(x, s, b, epsilon = 1e-5):
+   m, v = tf.nn.moments(x, [1], keep_dims=True)
+   normalized_input = (x - m) / tf.sqrt(v + epsilon)
+   return normalised_input * s + b
+
+
+'''
    Instance normalization
    https://arxiv.org/abs/1607.08022
 '''
