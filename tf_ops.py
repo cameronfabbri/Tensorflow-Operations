@@ -8,6 +8,14 @@ import tensorflow as tf
 import numpy as np
 import math
 
+'''
+   Kullback Leibler divergence
+   https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
+   https://github.com/fastforwardlabs/vae-tf/blob/master/vae.py#L178
+'''
+def kullbackleibler(mu, log_sigma):
+   return -0.5*tf.reduce_sum(1+2*log_sigma-mu**2-tf.exp(2*log_sigma),1)
+
 
 '''
    Batch normalization
