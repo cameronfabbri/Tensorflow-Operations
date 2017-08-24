@@ -16,6 +16,33 @@ import math
 def kullbackleibler(mu, log_sigma):
    return -0.5*tf.reduce_sum(1+2*log_sigma-mu**2-tf.exp(2*log_sigma),1)
 
+'''
+   Image Gradient Difference Loss
+   seen in here https://arxiv.org/abs/1511.05440
+'''   
+def loss_gradient_difference(true, generated):
+    true_x_shifted_right = true[:,1:,:,:]
+    true_x_shifted_left = true[:,:-1,:,:]
+    true_x_gradient = tf.abs(true_x_shifted_right - true_x_shifted_left)
+
+    generated_x_shifted_right = generated[:,1:,:,:]
+    generated_x_shifted_left = generated[:,:-1,:,:]
+    generated_x_gradient = tf.abs(generated_x_shifted_right - generated_x_shifted_left)
+
+    loss_x_gradient = tf.nn.l2_loss(true_x_gradient - generated_x_gradient)
+
+    true_y_shifted_right = true[:,:,1:,:]
+    true_y_shifted_left = true[:,:,:-1,:]
+    true_y_gradient = tf.abs(true_y_shifted_right - true_y_shifted_left)
+
+    generated_y_shifted_right = generated[:,:,1:,:]
+    generated_y_shifted_left = generated[:,:,:-1,:]
+    generated_y_gradient = tf.abs(generated_y_shifted_right - generated_y_shifted_left)
+    
+    loss_y_gradient = tf.nn.l2_loss(true_y_gradient - generated_y_gradient)
+
+    loss = loss_x_gradient + loss_y_gradient
+    return loss
 
 '''
    Batch normalization
