@@ -162,46 +162,36 @@ def l1Penalty(x, scale=0.1, name="L1Penalty"):
 
 ######## activation functions ###########
 '''
+   Swish: Self gated activation function
+   https://arxiv.org/pdf/1710.05941.pdf   
+'''
+def swish(x):
+   return x*tf.nn.sigmoid(x)
+
+'''
+   Regular relu
+'''
+def relu(x):
+   return tf.nn.relu(x, name)
+
+'''
    Leaky RELU
    https://arxiv.org/pdf/1502.01852.pdf
 '''
 def lrelu(x, leak=0.2):
    return tf.maximum(leak*x, x)
 
-
-'''
-   Like concatenated relu, but with elu
-   http://arxiv.org/abs/1603.05201
-'''
-def concat_elu(x):
-   axis = len(x.get_shape())-1
-   return tf.nn.elu(tf.concat(values=[x, -x], axis=axis))
-
-'''
-   Concatenated ReLU
-   http://arxiv.org/abs/1603.05201
-'''
-def concat_relu(x):
-   axis = len(x.get_shape())-1
-   return tf.nn.relu(tf.concat([x, -x], axis))
-
-'''
-   Regular relu
-'''
-def relu(x, name='relu'):
-   return tf.nn.relu(x, name)
-
 '''
    Tanh
 '''
-def tanh(x, name='tanh'):
-   return tf.nn.tanh(x, name)
+def tanh(x):
+   return tf.nn.tanh(x)
 
 '''
    Sigmoid
 '''
-def sig(x, name='sig'):
-   return tf.nn.sigmoid(x, name)
+def sig(x):
+   return tf.nn.sigmoid(x)
 
 '''
    Self normalizing neural networks paper
@@ -211,6 +201,23 @@ def selu(x):
    alpha = 1.6732632423543772848170429916717
    scale = 1.0507009873554804934193349852946
    return scale*tf.where(x>=0.0, x, alpha*tf.nn.elu(x))
+
+# activation function concats
+'''
+   Concatenated ReLU
+   http://arxiv.org/abs/1603.05201
+'''
+def concat_relu(x):
+   axis = len(x.get_shape())-1
+   return tf.nn.relu(tf.concat([x, -x], axis))
+
+'''
+   Like concatenated relu, but with elu
+   http://arxiv.org/abs/1603.05201
+'''
+def concat_elu(x):
+   axis = len(x.get_shape())-1
+   return tf.nn.elu(tf.concat(values=[x, -x], axis=axis))
 
 '''
    Like concat relu/elu, but with selu
