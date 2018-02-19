@@ -169,10 +169,22 @@ def swish(x):
    return x*tf.nn.sigmoid(x)
 
 '''
-   Regular relu
+   Regular ReLU
+   max(0,x)
+
+   http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.165.6419&rep=rep1&type=pdf
 '''
 def relu(x):
-   return tf.nn.relu(x, name)
+   return tf.nn.relu(x)
+
+'''
+   ReLU with max of 6
+   min(max(x ,0), 6)
+
+   http://www.cs.utoronto.ca/~kriz/conv-cifar10-aug2010.pdf
+'''
+def relu6(x)
+   return tf.nn.relu6(x)
 
 '''
    Leaky RELU
@@ -208,8 +220,9 @@ def selu(x):
    http://arxiv.org/abs/1603.05201
 '''
 def concat_relu(x):
-   axis = len(x.get_shape())-1
-   return tf.nn.relu(tf.concat([x, -x], axis))
+   #axis = len(x.get_shape())-1
+   #return tf.nn.relu(tf.concat([x, -x], axis))
+   return tf.nn.crelu(x)
 
 '''
    Like concatenated relu, but with elu
